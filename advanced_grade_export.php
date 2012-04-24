@@ -51,6 +51,7 @@ class advanced_grade_export extends grade_export {
 
 		    /// Print all the lines of data.
         $i = 0;
+		$Ncount=0;
         $geub = new grade_export_update_buffer();
         $gui = new graded_users_iterator($this->course, $this->columns, $this->groupid);
         $gui->init();
@@ -62,6 +63,9 @@ class advanced_grade_export extends grade_export {
 			  {
 				switch ($this->exp_cols[$i][0])
 				  {
+				  case 'counter':
+					echo '<td style="border:solid windowtext 1.0pt; mso-border-alt:solid windowtext .5pt">'.++$Ncount.'</td>';
+					break;
 				  case 'lastname':
 					echo '<td style="border:solid windowtext 1.0pt; mso-border-alt:solid windowtext .5pt">'.iconv('UTF-8','CP1251',$user->lastname).'</td>';
 					break;
@@ -79,6 +83,9 @@ class advanced_grade_export extends grade_export {
 					break;
 				  case 'email':
 					echo '<td style="border:solid windowtext 1.0pt; mso-border-alt:solid windowtext .5pt">'.$user->email.'</td>';
+					break;
+				  case 'empty':	
+					echo '<td style="border:solid windowtext 1.0pt; mso-border-alt:solid windowtext .5pt">&nbsp;</td>';
 					break;
 				  }
 			  }
@@ -136,6 +143,7 @@ class advanced_grade_export extends grade_export {
         /// Print all the lines of data.
 
         $i = 0;
+		$Ncount=0;
         $gui = new graded_users_iterator($this->course, $this->columns, $this->groupid);
         $gui->init();
         while ($userdata = $gui->next_user()) {
@@ -181,6 +189,9 @@ class advanced_grade_export extends grade_export {
 			  {
 				switch ($this->exp_cols[$i][0])
 				  {
+				  case 'counter':
+					echo '<td style="border-width:2px">'.++$Ncount.'</td>';
+					break;
 				  case 'lastname':
 					echo '<td style="border-width:2px">'.$user->lastname.'</td>';
 					break;
@@ -198,6 +209,9 @@ class advanced_grade_export extends grade_export {
 					break;
 				  case 'email':
 					echo '<td style="border-width:2px">'.$user->email.'</td>';
+					break;
+				  case 'empty':	
+					echo '<td style="border-width:2px">&nbsp;</td>';
 					break;
 				  }
 

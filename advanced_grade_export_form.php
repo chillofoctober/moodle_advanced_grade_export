@@ -39,12 +39,18 @@ class advanced_grade_export_form extends moodleform {
 		$mform->setType('advanced_grade_header', PARAM_RAW);
 		$opts='style="width:50px;" value=100';
 		$opts1='style="width:100px;"';
-		$mform->addElement('html', '<br><br><table style="width:350px;text-align:center"><tr><td style="width:150px">column name</td><td>length</td><td>order</td></tr><tr><td>');
+		$mform->addElement('html', '<br><br><table style="width:350px;text-align:center"><tr><td style="width:150px">column name</td><td>length</td><td style="width:50px;">order</td></tr><tr><td>');
+		$mform->addElement('text','counter_name','',$opts1.' value="#"');
+		$mform->addElement('html','</td><td>');
+		$mform->addElement('text','counter_length','',$opts);
+		$mform->addElement('html','</td><td>');
+		$options = array('0'=>'no','1'=>1, '2'=>2, '3'=>3, '4'=>4, '5'=>5, '6'=>6);
+		$mform->addElement('select','counter_order','',$options);
+		$mform->addElement('html','</td></tr><tr><td>');
 		$mform->addElement('text','firstname_name','',$opts1.' value="firstname"');
 		$mform->addElement('html','</td><td>');
 		$mform->addElement('text','firstname_length','',$opts);
-		$mform->addElement('html','</td><td style="width:50px;">');
-		$options = array('1'=>1, '2'=>2, '3'=>3, '4'=>4, '5'=>5, '6'=>6,'0'=>'no');
+		$mform->addElement('html','</td><td>');
 		$mform->addElement('select','firstname_order','',$options);
 		$mform->addElement('html','</td></tr><tr><td>');
 		$mform->addElement('text','lastname_name','',$opts1.' value="lastname"');
@@ -76,8 +82,14 @@ class advanced_grade_export_form extends moodleform {
 		$mform->addElement('text','email_length','',$opts);
 		$mform->addElement('html','</td><td>');
 		$mform->addElement('select','email_order','',$options);
+		$mform->addElement('html','</td></tr><tr><td>');
+		$mform->addElement('text','empty_name','',$opts1.' value="empty"');
+		$mform->addElement('html','</td><td>');
+		$mform->addElement('text','empty_length','',$opts);
+		$mform->addElement('html','</td><td>');
+		$mform->addElement('select','empty_order','',$options);
 		$mform->addElement('html','</td></tr></table>');
-
+		
 		$mform->addElement('editor', 'advanced_grade_footer', 'footer');
 		$mform->setType('advanced_grade_footer', PARAM_RAW);
 			// end advanced grade elements

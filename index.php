@@ -52,12 +52,14 @@ if ($groupmode == SEPARATEGROUPS and !$currentgroup and !has_capability('moodle/
 
 // process post information
 if ($data = $mform->get_data()) {
-  $exp_cols=array($data->firstname_order=>array('firstname',$data->firstname_name,$data->firstname_length),
+  $exp_cols=array($data->counter_order=>array('counter',$data->counter_name,$data->counter_length),
+				  $data->firstname_order=>array('firstname',$data->firstname_name,$data->firstname_length),
 				  $data->lastname_order=>array('lastname',$data->lastname_name,$data->lastname_length),
 				  $data->idnumber_order=>array('idnumber',$data->idnumber_name,$data->idnumber_length), 
 				  $data->institution_order=>array('institution',$data->institution_name,$data->institution_length), 
 				  $data->department_order=>array('department',$data->department_name,$data->department_length), 
-				  $data->email_order=>array('email',$data->email_name,$data->email_length));
+				  $data->email_order=>array('email',$data->email_name,$data->email_length),
+				  $data->empty_order=>array('empty',$data->empty_name,$data->empty_length));
   
   $export = new advanced_grade_export($course, $currentgroup, '', false, false, $data->display, $data->decimals, $data->advanced_grade_header['text'],$data->advanced_grade_footer['text'],$exp_cols);
 
