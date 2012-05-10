@@ -34,12 +34,12 @@ class advanced_grade_export_form extends moodleform {
 
         // begin advanced grade elements
 		$mform->addElement('header','advanced_grade_template', 'template');
-
+		$mform->addElement('html','<div style="position:relative;text-align:right"><a href="templates.php?id='.$COURSE->id.'&amp;mode=0">Go to templates</a></div>');
 		$mform->addElement('editor', 'advanced_grade_header', 'header');
 		$mform->setType('advanced_grade_header', PARAM_RAW);
 		$opts='style="width:50px;" value=100';
 		$opts1='style="width:100px;"';
-		$mform->addElement('html', '<br><br><table style="width:350px;text-align:center"><tr><td style="width:150px">column name</td><td>length</td><td style="width:50px;">order</td></tr><tr><td>');
+		$mform->addElement('html', '<br><br><table style="width:350px;text-align:center;margin-left:110px;"><tr><td style="width:150px;">column name</td><td>length</td><td style="width:50px;">order</td></tr><tr><td>');
 		$mform->addElement('text','counter_name','',$opts1.' value="#"');
 		$mform->addElement('html','</td><td>');
 		$mform->addElement('text','counter_length','',$opts);
