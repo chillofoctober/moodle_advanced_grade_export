@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="grade/export/advanced_grade_export/db" VERSION="20120424" COMMENT="XMLDB file for Moodle grade/export/advanced_grade_export"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="advanced_grade_export_template" COMMENT="Module for templates of Advanced Grade Export" NEXT="advanced_grade_export_template_fields">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" COMMENT="id of the table, please edit me" NEXT="course"/>
+        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="name"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="course" NEXT="header"/>
+        <FIELD NAME="header" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" COMMENT="This is a header for advanced grade export" PREVIOUS="name" NEXT="footer"/>
+        <FIELD NAME="footer" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" COMMENT="This is a footer for advanced grade export" PREVIOUS="header"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for advanced grade export template"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="course" UNIQUE="false" FIELDS="course"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="advanced_grade_export_template_fields" COMMENT="fields for advanced grade export template" PREVIOUS="advanced_grade_export_template" NEXT="advanced_grade_export_fields_type">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="templateid"/>
+        <FIELD NAME="templateid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="name"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="templateid" NEXT="length"/>
+        <FIELD NAME="length" TYPE="int" LENGTH="5" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="name" NEXT="type"/>
+        <FIELD NAME="type" TYPE="int" LENGTH="3" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="length" NEXT="number"/>
+        <FIELD NAME="number" TYPE="int" LENGTH="3" NOTNULL="false" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="type"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for advanced_grade_export_template_fields"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="templateid" UNIQUE="false" FIELDS="templateid" NEXT="type"/>
+        <INDEX NAME="type" UNIQUE="false" FIELDS="type" PREVIOUS="templateid"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="advanced_grade_export_fields_type" COMMENT="fields type for advanced grade export" PREVIOUS="advanced_grade_export_template_fields">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="name"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for advanced grade export fields type"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>
