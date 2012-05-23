@@ -1,6 +1,6 @@
 <?php
 
-// This file created by Eugene Shwab <chillofoctober@gmail.com
+// This file created by Eugene Shwab <chillofoctober@gmail.com>
 // for Moodle advanced grade export plugin
 
 if (!defined('MOODLE_INTERNAL')) 
@@ -38,10 +38,10 @@ if (!defined('MOODLE_INTERNAL'))
 		catch(Exception $e)
 		{
 			$transaction->rollback($e);
-			echo 'error!';
+			echo get_string('error','gradeexport_advanced_grade_export');
 			return;
 		}
-		echo 'Updated successfully<br><br>&nbsp;&nbsp;';
+		echo get_string('success_update','gradeexport_advanced_grade_export').'<br><br>&nbsp;&nbsp;';
 	  }
 
 	  public function read()
@@ -56,7 +56,7 @@ if (!defined('MOODLE_INTERNAL'))
 			print "<a href=templates.php?id=".$this->id."&amp;mode=4&amp;tid=".$id->id.">";
 			print '<img src="'.$OUTPUT->pix_url('t/delete') . '" class="iconsmall" alt="'.get_string('delete').'" title="'.get_string('delete').'" ></a><br>&nbsp;&nbsp;';
 		  }
-		echo "<br><br>&nbsp;&nbsp;<a href='templates.php?id=".$this->id."&amp;mode=1'>Add template</a>";
+		echo "<br><br>&nbsp;&nbsp;<a href='templates.php?id=".$this->id."&amp;mode=1'>".get_string('add_template','gradeexport_advanced_grade_export')."</a>";
 	  }
 	  
 	  public function add($template_name, $template_header="", $template_footer="", $template_fields)
@@ -87,10 +87,10 @@ if (!defined('MOODLE_INTERNAL'))
 		catch(Exception $e)
 		{
 			$transaction->rollback($e);
-			echo 'error!';
+			echo get_string('error','gradeexport_advanced_grade_export');
 			return;
 		}
-		echo 'Saved successfully<br><br>&nbsp;&nbsp;';
+		echo get_string('success_save','gradeexport_advanced_grade_export').'<br><br>&nbsp;&nbsp;';
 
 	  }
 	  
@@ -105,10 +105,10 @@ if (!defined('MOODLE_INTERNAL'))
 		}
 		catch(Exception $e) {
 		  $transaction->rollback($e);
-		  echo 'error!';
+		  echo get_string('error','gradeexport_advanced_grade_export');
 		  return;
 		}
-		echo 'Deleted successfully<br><br>&nbsp;&nbsp;';
+		echo get_string('success_delete','gradeexport_advanced_grade_export').'<br><br>&nbsp;&nbsp;';
 							
 	  }
 

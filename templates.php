@@ -1,6 +1,6 @@
 <?php
 
-// This file created by Eugene Shwab <chillofoctober@gmail.com
+// This file created by Eugene Shwab <chillofoctober@gmail.com>
 // for advanced grade export plugin for moodle
 
 require_once '../../../config.php';
@@ -25,7 +25,7 @@ $context = get_context_instance(CONTEXT_COURSE, $id);
 require_capability('moodle/grade:export', $context);
 require_capability('gradeexport/advanced_grade_export:view', $context);
 
-print_grade_page_head($COURSE->id, 'export', 'advanced_grade_export', 'Templates for ' . get_string('pluginname', 'gradeexport_advanced_grade_export'));
+print_grade_page_head($COURSE->id, 'export', 'advanced_grade_export', get_string('templates_for','gradeexport_advanced_grade_export'));
 
 $groupmode    = groups_get_course_groupmode($course);   // Groups are being used
 $currentgroup = groups_get_course_group($course, true);

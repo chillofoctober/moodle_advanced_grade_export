@@ -17,7 +17,7 @@ function xmldb_gradeexport_advanced_grade_export_install() {
     global $DB;
 
 	$result = true;
-	$arr = array('counter','firstname','lastname','idnumber','institutuin','department','email','empty');
+	$arr = array('counter','firstname','lastname','idnumber','institution','department','email','empty');
 	foreach ($arr as $k) {
 		unset($rec);
 		$rec->name = $k;

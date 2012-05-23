@@ -26,71 +26,60 @@ class advanced_grade_export_form extends moodleform {
         global $CFG, $COURSE, $USER, $DB;
 
         $mform =& $this->_form;
+        $tid=optional_param('tid',0,PARAM_INT);
         if (isset($this->_customdata)) {  // hardcoding plugin names here is hacky
             $features = $this->_customdata;
         } else {
             $features = array();
         }
-
         // begin advanced grade elements
-		$mform->addElement('header','advanced_grade_template', 'template');
-		$mform->addElement('html','<div style="position:relative;text-align:right"><a href="templates.php?id='.$COURSE->id.'&amp;mode=0">Go to templates</a></div>');
-		$mform->addElement('editor', 'advanced_grade_header', 'header');
+		$mform->addElement('header','advanced_grade_template', get_string('template','gradeexport_advanced_grade_export'));
+        echo '<div style="position:absolute;z-index:100;top:160px;left:85%;margin-right:10px;"><a href="templates.php?id='.$COURSE->id.'&amp;mode=0">'
+            .get_string('go_to_templates','gradeexport_advanced_grade_export').'</a><br>';
+        $result = $DB->get_records('advanced_grade_export_template',array('course'=>$COURSE->id),null,'name,id');
+        echo '<ul>';
+        foreach ($result as $name=>$id)
+          {
+            echo "<li><a href=index.php?id=".$COURSE->id."&amp;tid=".$id->id.">".$name."</a>";
+            echo "</li>";
+          }
+        echo '</ul></div>';
+
+        $headfoot=$DB->get_record('advanced_grade_export_template',array('id'=>$tid),'*');
+        $fields=$DB->get_records('advanced_grade_export_template_fields',array('templateid'=>$tid));
+        $names=$DB->get_records('advanced_grade_export_fields_type');
+        $fieldsarr=array();
+        foreach ($fields as $field)
+        {
+          $tmparr=get_object_vars($field);
+          $fieldsarr[$tmparr['type']]=$tmparr;
+        }
+        for ($i=1;$i<9;$i++)
+          if (!isset($fieldsarr[$i]))
+            {
+              $this->fields_array_parameters($fieldsarr[$i]);
+            }		
+
+		$mform->addElement('editor', 'advanced_grade_header', get_string('header','gradeexport_advanced_grade_export'))->setValue(array('text' => $this->set_name($headfoot->header,'')) );;
 		$mform->setType('advanced_grade_header', PARAM_RAW);
-		$opts='style="width:50px;" value=100';
+        $opts='style="width:50px;"';
 		$opts1='style="width:100px;"';
-		$mform->addElement('html', '<br><br><table style="width:350px;text-align:center;margin-left:110px;"><tr><td style="width:150px;">column name</td><td>length</td><td style="width:50px;">order</td></tr><tr><td>');
-		$mform->addElement('text','counter_name','',$opts1.' value="#"');
-		$mform->addElement('html','</td><td>');
-		$mform->addElement('text','counter_length','',$opts);
-		$mform->addElement('html','</td><td>');
-		$options = array('0'=>'no','1'=>1, '2'=>2, '3'=>3, '4'=>4, '5'=>5, '6'=>6);
-		$mform->addElement('select','counter_order','',$options);
-		$mform->addElement('html','</td></tr><tr><td>');
-		$mform->addElement('text','firstname_name','',$opts1.' value="firstname"');
-		$mform->addElement('html','</td><td>');
-		$mform->addElement('text','firstname_length','',$opts);
-		$mform->addElement('html','</td><td>');
-		$mform->addElement('select','firstname_order','',$options);
-		$mform->addElement('html','</td></tr><tr><td>');
-		$mform->addElement('text','lastname_name','',$opts1.' value="lastname"');
-		$mform->addElement('html','</td><td>');
-		$mform->addElement('text','lastname_length','',$opts);
-		$mform->addElement('html','</td><td>');
-		$mform->addElement('select','lastname_order','',$options);
-		$mform->addElement('html','</td></tr><tr><td>');
-		$mform->addElement('text','idnumber_name','',$opts1.' value="idnumber"');
-		$mform->addElement('html','</td><td>');
-		$mform->addElement('text','idnumber_length','',$opts);
-		$mform->addElement('html','</td><td>');
-		$mform->addElement('select','idnumber_order','',$options);
-		$mform->addElement('html','</td></tr><tr><td>');
-		$mform->addElement('text','institution_name','',$opts1.' value="institution"');
-		$mform->addElement('html','</td><td>');
-		$mform->addElement('text','institution_length','',$opts);
-		$mform->addElement('html','</td><td>');
-		$mform->addElement('select','institution_order','',$options);
-		$mform->addElement('html','</td></tr><tr><td>');
-		$mform->addElement('text','department_name','',$opts1.' value="department"');
-		$mform->addElement('html','</td><td>');
-		$mform->addElement('text','department_length','',$opts);
-		$mform->addElement('html','</td><td>');
-		$mform->addElement('select','department_order','',$options);
-		$mform->addElement('html','</td></tr><tr><td>');
-		$mform->addElement('text','email_name','',$opts1.' value="email"');
-		$mform->addElement('html','</td><td>');
-		$mform->addElement('text','email_length','',$opts);
-		$mform->addElement('html','</td><td>');
-		$mform->addElement('select','email_order','',$options);
-		$mform->addElement('html','</td></tr><tr><td>');
-		$mform->addElement('text','empty_name','',$opts1.' value="empty"');
-		$mform->addElement('html','</td><td>');
-		$mform->addElement('text','empty_length','',$opts);
-		$mform->addElement('html','</td><td>');
-		$mform->addElement('select','empty_order','',$options);
-		$mform->addElement('html','</td></tr></table>');
+        $options = array('0'=>get_string('no','gradeexport_advanced_grade_export'),'1'=>1, '2'=>2, '3'=>3, '4'=>4, '5'=>5, '6'=>6);
+        $mform->addElement('html', '<br><br><table style="width:350px;text-align:center;margin-left:110px;"><tr><td style="width:150px;">'.
+            get_string('column_name','gradeexport_advanced_grade_export').'</td><td>'.get_string('length','gradeexport_advanced_grade_export').
+            '</td><td style="width:70px;">'.get_string('order','gradeexport_advanced_grade_export').'</td></tr>');
+		for ($i=1; $i <9 ; $i++) { 
+            $mform->addElement('html','<tr><td>');
+            $mform->addElement('text',$names[$i]->name.'_name','',$opts1.'value="'.$this->set_name($fieldsarr[$i]['name'],get_string($names[$i]->name, 'gradeexport_advanced_grade_export')).'"');
+            $mform->addElement('html','</td><td>');
+            $mform->addElement('text',$names[$i]->name.'_length','',$opts.' value='.$fieldsarr[$i]['length']);     
+            $mform->addElement('html','</td><td>');
+            $mform->addElement('select',$names[$i]->name.'_order','',$options)->setSelected($fieldsarr[$i]['number']);
+            $mform->addElement('html','</td></tr>');
+        }
+		$mform->addElement('html','</table>');
 		
-		$mform->addElement('editor', 'advanced_grade_footer', 'footer');
+		$mform->addElement('editor', 'advanced_grade_footer', get_string('footer','gradeexport_advanced_grade_export'))->setValue(array('text'=>$this->set_name($headfoot->footer,'')));
 		$mform->setType('advanced_grade_footer', PARAM_RAW);
 			// end advanced grade elements
 		$mform->addElement('header', 'options', get_string('options', 'grades'));
@@ -191,5 +180,16 @@ class advanced_grade_export_form extends moodleform {
         $this->add_action_buttons(false, get_string('submit'));
 
     }
+
+  function fields_array_parameters(&$fields)
+  {
+    $fields['length']=100;
+    $fields['number']='no';
+  }
+  function set_name(&$name,$altname)
+  {
+    $name=isset($name)?$name:$altname;
+    return $name;
+  }
 }
 

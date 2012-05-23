@@ -34,7 +34,7 @@ $context = get_context_instance(CONTEXT_COURSE, $id);
 require_capability('moodle/grade:export', $context);
 require_capability('gradeexport/advanced_grade_export:view', $context);
 
-print_grade_page_head($COURSE->id, 'export', 'advanced_grade_export', get_string('exportto', 'grades') . ' ' . get_string('pluginname', 'gradeexport_advanced_grade_export'));
+print_grade_page_head($COURSE->id, 'export', 'advanced_grade_export', get_string('pluginname', 'gradeexport_advanced_grade_export'));
 
 if (!empty($CFG->gradepublishing)) {
     $CFG->gradepublishing = has_capability('gradeexport/advanced_grade_export:publish', $context);
