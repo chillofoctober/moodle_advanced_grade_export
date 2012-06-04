@@ -44,6 +44,7 @@ abstract class grade_export {
 	public $advanced_grade_header;
 	public $advanced_grade_footer;
 	public $exp_cols;
+	public $sel_itemids;
 	// advanced_grade_vars end
     /**
      * Constructor should set up all the private variables ready to be pulled
@@ -55,15 +56,15 @@ abstract class grade_export {
      * @param boolean $export_letters
      * @note Exporting as letters will lead to data loss if that exported set it re-imported.
      */
-    public function grade_export($course, $groupid=0, $itemlist='', $export_feedback=false, $updatedgradesonly = false, $displaytype = GRADE_DISPLAY_TYPE_REAL, $decimalpoints = 2,$advanced_grade_header, $advanced_grade_footer, $exp_cols) {
+    public function grade_export($course, $groupid=0, $itemlist='', $export_feedback=false, $updatedgradesonly = false, $displaytype = GRADE_DISPLAY_TYPE_REAL, $decimalpoints = 2,$advanced_grade_header, $advanced_grade_footer, $exp_cols, $sel_itemids='') {
         $this->course = $course;
         $this->groupid = $groupid;
         $this->grade_items = grade_item::fetch_all(array('courseid'=>$this->course->id));
-
+		//		print_r($this->grade_items);
         //Populating the columns here is required by /grade/export/(whatever)/export.php
         //however index.php, when the form is submitted, will construct the collection here
         //with an empty $itemlist then reconstruct it in process_form() using $formdata
-        $this->columns = array();
+		$this->columns = array();
         if (!empty($itemlist)) {
             if ($itemlist=='-1') {
                 //user deselected all items
@@ -77,11 +78,13 @@ abstract class grade_export {
                 }
             }
         } else {
-            foreach ($this->grade_items as $itemid=>$unused) {
+		  /* I think the commented code is same as code written later            
+						foreach ($this->grade_items as $itemid=>$unused) {
                 $this->columns[$itemid] =& $this->grade_items[$itemid];
-            }
+				}*/
+		  $this->columns=$this->grade_items;
         }
-
+		//		print_r($this->columns);
         $this->export_feedback = $export_feedback;
         $this->userkey         = '';
         $this->previewrows     = false;
@@ -95,6 +98,7 @@ abstract class grade_export {
 		$this->exp_cols[0][0]='';
 		$this->exp_cols[0][1]='';
 		$this->exp_cols[0][2]='';
+		$this->sel_itemids=$sel_itemids;
     
      }
     /**
@@ -105,6 +109,7 @@ abstract class grade_export {
         global $USER;
 
         $this->columns = array();
+		$this->sel_itemids=array();
         if (!empty($formdata->itemids)) {
             if ($formdata->itemids=='-1') {
                 //user deselected all items
@@ -112,15 +117,20 @@ abstract class grade_export {
                 foreach ($formdata->itemids as $itemid=>$selected) {
                     if ($selected and array_key_exists($itemid, $this->grade_items)) {
                         $this->columns[$itemid] =& $this->grade_items[$itemid];
-                    }
-                }
-            }
-        } else {
+						if ($formdata->sel_itemids[$itemid]>0)
+						  $this->sel_itemids[$itemid]=$formdata->sel_itemids[$itemid];
+					}
+				}
+			}
+		}
+		/*	for what this code?
+			else {
             foreach ($this->grade_items as $itemid=>$unused) {
                 $this->columns[$itemid] =& $this->grade_items[$itemid];
             }
-        }
-
+			}*/
+		//print_r($this->sel_itemids);
+		
         if (isset($formdata->key)) {
             if ($formdata->key == 1 && isset($formdata->iprestriction) && isset($formdata->validuntil)) {
                 // Create a new key
@@ -219,10 +229,20 @@ abstract class grade_export {
         $itemids = array_keys($this->columns);
         $itemidsparam = implode(',', $itemids);
 		$exp_cols_string='';
-		for ($i=1;$i < count($this->exp_cols);$i++)
+		$sel_itemids_string='';
+		$sel_keys=array_keys($this->sel_itemids);
+		//		$length=count($this->exp_cols)+count($this->sel_itemids);
+		//		for ($i=1;$i < $length;$i++)
+		foreach ($this->exp_cols as $i=>$expcols)
 		  {
-			$exp_cols_string.=$this->exp_cols[$i][0].','.$this->exp_cols[$i][1].','.$this->exp_cols[$i][2].';';
+			//			if (isset($this->exp_cols[$i]))
+			$exp_cols_string.=$i.','.$expcols[0].','.$expcols[1].','.$expcols[2].';';
 		  }
+			//		  			else
+			  foreach ($sel_keys as $key)
+				//					if ($this->sel_itemids[$key]==$i)
+				  $sel_itemids_string.=$key.','.$this->sel_itemids[$key].';';
+		  
         if (empty($itemidsparam)) {
             $itemidsparam = '-1';
         }
@@ -237,7 +257,8 @@ abstract class grade_export {
                         'decimalpoints'     =>$this->decimalpoints,
 						'advanced_grade_header'        =>$this->advanced_grade_header,
 						'advanced_grade_footer'        =>$this->advanced_grade_footer,
-						'exp_cols_string'   =>$exp_cols_string
+						'exp_cols_string'   =>$exp_cols_string,
+						'sel_itemids'       =>$sel_itemids_string
 						);
 
         return $params;

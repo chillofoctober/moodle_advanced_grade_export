@@ -16,7 +16,6 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once '../../../config.php';
-//require_once $CFG->dirroot.'/grade/export/lib.php';
 require_once 'advanced_grade_export_lib.php';
 require_once 'advanced_grade_export.php';
 
@@ -72,8 +71,10 @@ if ($data = $mform->get_data()) {
 }
 
 groups_print_course_menu($course, 'index.php?id='.$id);
+echo '<script src="advanced_grade_export.js"></script>';
 echo '<div class="clearer"></div>';
 $mform->display();
+echo '<script>set_order(this);</script>';
 
 echo $OUTPUT->footer();
 

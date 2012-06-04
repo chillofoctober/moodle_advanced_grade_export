@@ -59,12 +59,12 @@ class advanced_grade_export_form extends moodleform {
             {
               $this->fields_array_parameters($fieldsarr[$i]);
             }		
-
+		
 		$mform->addElement('editor', 'advanced_grade_header', get_string('header','gradeexport_advanced_grade_export'))->setValue(array('text' => $this->set_name($headfoot->header,'')) );;
 		$mform->setType('advanced_grade_header', PARAM_RAW);
         $opts='style="width:50px;"';
 		$opts1='style="width:100px;"';
-        $options = array('0'=>get_string('no','gradeexport_advanced_grade_export'),'1'=>1, '2'=>2, '3'=>3, '4'=>4, '5'=>5, '6'=>6);
+        $options1 = array('0'=>get_string('no','gradeexport_advanced_grade_export'),'1'=>1, '2'=>2, '3'=>3, '4'=>4, '5'=>5, '6'=>6, '7'=>7, '8'=>8);
         $mform->addElement('html', '<br><br><table style="width:350px;text-align:center;margin-left:110px;"><tr><td style="width:150px;">'.
             get_string('column_name','gradeexport_advanced_grade_export').'</td><td>'.get_string('length','gradeexport_advanced_grade_export').
             '</td><td style="width:70px;">'.get_string('order','gradeexport_advanced_grade_export').'</td></tr>');
@@ -74,7 +74,7 @@ class advanced_grade_export_form extends moodleform {
             $mform->addElement('html','</td><td>');
             $mform->addElement('text',$names[$i]->name.'_length','',$opts.' value='.$fieldsarr[$i]['length']);     
             $mform->addElement('html','</td><td>');
-            $mform->addElement('select',$names[$i]->name.'_order','',$options)->setSelected($fieldsarr[$i]['number']);
+            $mform->addElement('select',$names[$i]->name.'_order','',$options1)->setSelected($fieldsarr[$i]['number']);
             $mform->addElement('html','</td></tr>');
         }
 		$mform->addElement('html','</table>');
@@ -154,6 +154,7 @@ class advanced_grade_export_form extends moodleform {
             $needs_multiselect = false;
             $canviewhidden = has_capability('moodle/grade:viewhidden', get_context_instance(CONTEXT_COURSE, $COURSE->id));
 
+			$mform->addElement('html','<table class="grade_elements">');
             foreach ($grade_items as $grade_item) {
                 // Is the grade_item hidden? If so, can the user see hidden grade_items?
                 if ($grade_item->is_hidden() && !$canviewhidden) {
@@ -164,14 +165,19 @@ class advanced_grade_export_form extends moodleform {
                     $mform->addElement('advcheckbox', 'itemids['.$grade_item->id.']', $grade_item->get_name(), get_string('noidnumber', 'grades'));
                     $mform->hardFreeze('itemids['.$grade_item->id.']');
                 } else {
-                    $mform->addElement('advcheckbox', 'itemids['.$grade_item->id.']', $grade_item->get_name(), null, array('group' => 1));
+				  $mform->addElement('html','<tr><td style="width:250px;">');
+				  $mform->addElement('advcheckbox', 'itemids['.$grade_item->id.']', $grade_item->get_name(), null, array('group' => 1));
                     $mform->setDefault('itemids['.$grade_item->id.']', 1);
+					$mform->addElement('html','</td><td style="width:30px">');
+					$mform->addElement('select','sel_'.'itemids['.$grade_item->id.']','',$options1);
+					$mform->addElement('html','</td></tr>');
                     $needs_multiselect = true;
                 }
             }
+			$mform->addElement('html','</table>');
 
             if ($needs_multiselect) {
-                $this->add_checkbox_controller(1, null, null, 1); // 1st argument is group name, 2nd is link text, 3rd is attributes and 4th is original value
+                $this->add_checkbox_controller(1, null, null, 0); // 1st argument is group name, 2nd is link text, 3rd is attributes and 4th is original value
             }
         }
 

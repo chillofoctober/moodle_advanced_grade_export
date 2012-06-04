@@ -29,13 +29,27 @@ $decimalpoints     = optional_param('decimalpoints', $CFG->grade_export_decimalp
 $advanced_grade_header        = optional_param('advanced_grade_header',0,PARAM_CLEANHTML);
 $advanced_grade_footer        = optional_param('advanced_grade_footer',0,PARAM_CLEANHTML);
 $exp_cols_string   = required_param('exp_cols_string',PARAM_RAW);
+$sel_itemids_string=optional_param('sel_itemids',0,PARAM_RAW);
 
-
-$pos=0;
-$i=1;
-$delimiter=',';
-//$exp_cols[0][0]='';
-while($pos < strlen($exp_cols_string))
+$lines=explode(';',$exp_cols_string);
+for ($i=0;$i<count($lines)-1;$i++)
+  {
+	$pos=strpos($lines[$i],',');
+	$k=0;
+	$j=substr($lines[$i],0,$pos);
+	if ($j>0) {
+	  while ($k<2)
+	  {
+		$pos++;
+		$pos1=strpos($lines[$i],',',$pos);
+		$exp_cols[$j][$k]=substr($lines[$i],$pos,$pos1-$pos);
+		$pos=$pos1;
+		$k++;
+	  }
+	  $exp_cols[$j][$k]=substr($lines[$i],$pos+1);
+	}
+  }
+/*while($pos < strlen($exp_cols_string))
   {
 	for ($j=0;$j<3;$j++)
 	  {
@@ -46,6 +60,13 @@ while($pos < strlen($exp_cols_string))
 	  }
 	$delimiter=',';
 	$i++;
+	}*/
+$pos=0;
+$lines=explode(';',$sel_itemids_string);
+$sel_itemids=array();
+for ($i=0;$i<count($lines)-1;$i++)
+  {
+	  $sel_itemids[substr($lines[$i],0,strpos($lines[$i],','))]=substr($lines[$i],strpos($lines[$i],',')+1);
   }
 
 if (!$course = $DB->get_record('course', array('id'=>$id))) {
@@ -65,7 +86,8 @@ if (groups_get_course_groupmode($COURSE) == SEPARATEGROUPS and !has_capability('
 }
 
 // print all the exported data here
-$export = new advanced_grade_export($course, $groupid, $itemids, $export_feedback, $updatedgradesonly, $displaytype, $decimalpoints,$advanced_grade_header,$advanced_grade_footer,$exp_cols );
+$export = new advanced_grade_export($course, $groupid, $itemids, $export_feedback, $updatedgradesonly, $displaytype, $decimalpoints,$advanced_grade_header,$advanced_grade_footer,$exp_cols, $sel_itemids );
+//print_r($exp_cols);
 $export->print_grades();
 
 
