@@ -1,3 +1,5 @@
+var selectedOptions=[0,0,0,0,0,0,0,0,0,0];
+
 function set_order()
 {
 	items=document.getElementsByTagName('table');
@@ -47,7 +49,13 @@ function clickEvent(e)
 function select_show(e)
 {
 	var el="id_sel_"+e.id.substr(3);
-	e.checked ? document.getElementById(el).style.display="" : document.getElementById(el).style.display="none";
+	if (e.checked) {
+		document.getElementById(el).style.display="";
+	}
+	else {
+		document.getElementById(el).style.display="none";
+		document.getElementById(el).options[0].selected=true;
+	}
 }
 
 function ifie()
@@ -57,11 +65,36 @@ function ifie()
 	{
 		return true;
 	}
+	return false;
 }
 
-//fitemtitle
-//fitem_checkbox
-/*
- element[0].childNodes[j].className="fitemtitle"
+function choosedOpts(e) 
+{
+ var index=e.selectedIndex;
+ var lastInd=deleteObsolete(e.id);
+ if (selectedOptions[index]==0)
+ {
+	 selectedOptions[index]=e.id;
+ }
+ else
+ {
+	 for (var i=1;i<selectedOptions.length;i++)
+	 {
+		 if (selectedOptions[i]==0 && i!=lastInd) {
+			 e.options[i].selected=true;
+			 selectedOptions[i]=e.id;
+			 break;
+		 }
+	 }
+ }
+}
 
- */
+function deleteObsolete(id)
+{
+	for (var i=1;i<selectedOptions.length;i++)
+		if (selectedOptions[i]==id) {
+			selectedOptions[i]=0;
+			return i;
+		}
+	return 0;
+}

@@ -36,7 +36,12 @@ class advanced_grade_export extends grade_export {
         echo '<tr>';
 		//		print_r($this->columns);
 		//		echo $this->sel_itemids;
-		$col_count=count($this->exp_cols)+count($this->sel_itemids);
+		$col_count=0;
+		foreach ($this->exp_cols as $index=>$unused)
+		  $index>$col_count?$col_count=$index:$col_count;
+		foreach ($this->sel_itemids as $index=>$unused)
+		  $index>$col_count?$col_count=$index:$col_count;
+		//		$col_count=count($this->exp_cols)+count($this->sel_itemids);
 		//		print_r($this->exp_cols);
 		for ($i=1;$i<$col_count;$i++)
 		{
@@ -142,7 +147,12 @@ class advanced_grade_export extends grade_export {
 		echo $this->advanced_grade_header;
 		echo '<table style="border-width:2px">';
         echo '<tr>';
-		$col_count=count($this->exp_cols)+count($this->sel_itemids);
+		$col_count=0;
+		foreach ($this->exp_cols as $index=>$unused)
+		  $index>$col_count?$col_count=$index:$col_count;
+		foreach ($this->sel_itemids as $index=>$unused)
+		  $index>$col_count?$col_count=$index:$col_count;
+		//		$col_count=count($this->exp_cols)+count($this->sel_itemids);
 		for ($i=1;$i<$col_count;$i++)
 		{
 		  if (isset($this->exp_cols[$i]))

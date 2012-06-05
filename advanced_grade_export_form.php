@@ -74,7 +74,7 @@ class advanced_grade_export_form extends moodleform {
             $mform->addElement('html','</td><td>');
             $mform->addElement('text',$names[$i]->name.'_length','',$opts.' value='.$fieldsarr[$i]['length']);     
             $mform->addElement('html','</td><td>');
-            $mform->addElement('select',$names[$i]->name.'_order','',$options1)->setSelected($fieldsarr[$i]['number']);
+            $mform->addElement('select',$names[$i]->name.'_order','',$options1,'onchange="choosedOpts(this)"')->setSelected($fieldsarr[$i]['number']);
             $mform->addElement('html','</td></tr>');
         }
 		$mform->addElement('html','</table>');
@@ -169,7 +169,7 @@ class advanced_grade_export_form extends moodleform {
 				  $mform->addElement('advcheckbox', 'itemids['.$grade_item->id.']', $grade_item->get_name(), null, array('group' => 1));
                     $mform->setDefault('itemids['.$grade_item->id.']', 1);
 					$mform->addElement('html','</td><td style="width:30px">');
-					$mform->addElement('select','sel_'.'itemids['.$grade_item->id.']','',$options1);
+					$mform->addElement('select','sel_'.'itemids['.$grade_item->id.']','',$options1,'onchange="choosedOpts(this)"');
 					$mform->addElement('html','</td></tr>');
                     $needs_multiselect = true;
                 }
