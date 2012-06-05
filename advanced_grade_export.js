@@ -55,6 +55,7 @@ function select_show(e)
 	else {
 		document.getElementById(el).style.display="none";
 		document.getElementById(el).options[0].selected=true;
+		deleteObsolete(el);
 	}
 }
 
