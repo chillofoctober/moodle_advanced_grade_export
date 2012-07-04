@@ -30,6 +30,7 @@ $advanced_grade_header        = optional_param('advanced_grade_header',0,PARAM_C
 $advanced_grade_footer        = optional_param('advanced_grade_footer',0,PARAM_CLEANHTML);
 $exp_cols_string   = required_param('exp_cols_string',PARAM_RAW);
 $sel_itemids_string=optional_param('sel_itemids',0,PARAM_RAW);
+$ed_itemids_string=optional_param('ed_itemids',0,PARAM_RAW);
 
 $lines=explode(';',$exp_cols_string);
 for ($i=0;$i<count($lines)-1;$i++)
@@ -49,26 +50,8 @@ for ($i=0;$i<count($lines)-1;$i++)
 	  $exp_cols[$j][$k]=substr($lines[$i],$pos+1);
 	}
   }
-/*while($pos < strlen($exp_cols_string))
-  {
-	for ($j=0;$j<3;$j++)
-	  {
-		if ($j==2) { $delimiter=';'; }
-		$pos1=strpos($exp_cols_string,$delimiter,$pos);
-		$exp_cols[$i][$j]=substr($exp_cols_string,$pos,$pos1-$pos);
-		$pos=$pos1+1;
-	  }
-	$delimiter=',';
-	$i++;
-	}*/
-$pos=0;
-$lines=explode(';',$sel_itemids_string);
-$sel_itemids=array();
-for ($i=0;$i<count($lines)-1;$i++)
-  {
-	  $sel_itemids[substr($lines[$i],0,strpos($lines[$i],','))]=substr($lines[$i],strpos($lines[$i],',')+1);
-  }
-
+$sel_itemids=build_items($sel_itemids_string);
+$ed_itemids=build_items($ed_itemids_string);
 if (!$course = $DB->get_record('course', array('id'=>$id))) {
     print_error('nocourseid');
 }
@@ -86,8 +69,18 @@ if (groups_get_course_groupmode($COURSE) == SEPARATEGROUPS and !has_capability('
 }
 
 // print all the exported data here
-$export = new advanced_grade_export($course, $groupid, $itemids, $export_feedback, $updatedgradesonly, $displaytype, $decimalpoints,$advanced_grade_header,$advanced_grade_footer,$exp_cols, $sel_itemids );
+$export = new advanced_grade_export($course, $groupid, $itemids, $export_feedback, $updatedgradesonly, $displaytype, $decimalpoints,$advanced_grade_header,$advanced_grade_footer,$exp_cols, $sel_itemids,$ed_itemids );
 //print_r($exp_cols);
 $export->print_grades();
 
-
+function build_items($string)
+{
+ $pos=0;
+ $lines=explode(';',$string);
+ $items=array();
+ for ($i=0;$i<count($lines)-1;$i++)
+   {
+	 $items[substr($lines[$i],0,strpos($lines[$i],','))]=substr($lines[$i],strpos($lines[$i],',')+1);
+   } 
+ return $items;
+}

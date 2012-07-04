@@ -8,7 +8,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'улучшенный экспорт оценок';
+$string['pluginname'] = 'Улучшенный экспорт оценок';
 $string['advanced_grade_export:publish'] = 'Опубликовать улучшенный экспорт оценок';
 $string['advanced_grade_export:view'] = 'Использовать улучшенный экспорт оценок';
 $string['counter']='№';
@@ -35,3 +35,4 @@ $string['success_update']='успешно изменено';
 $string['success_save']='успешно сохранено';
 $string['success_delete']='успешно удалено';
 $string['templates_for']='шаблоны для улучшенного экспорта оценок';
+$string['previewrows']='Предпросмотр';

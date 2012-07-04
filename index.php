@@ -42,7 +42,8 @@ if (!empty($CFG->gradepublishing)) {
 $mform = new advanced_grade_export_form(null, array('publishing' => true));
 
 $groupmode    = groups_get_course_groupmode($course);   // Groups are being used
-$currentgroup = groups_get_course_group($course, true);
+$currentgroup = groups_get_course_group($course,true);
+
 if ($groupmode == SEPARATEGROUPS and !$currentgroup and !has_capability('moodle/site:accessallgroups', $context)) {
     echo $OUTPUT->heading(get_string("notingroup"));
     echo $OUTPUT->footer();
@@ -64,13 +65,13 @@ if ($data = $mform->get_data()) {
 
     // print the grades on screen for feedbacks
 	$export->process_form($data);
-    $export->print_continue();
+	$export->print_for_groups();
 	$export->display_my_preview();
     echo $OUTPUT->footer();
     exit;
 }
 
-groups_print_course_menu($course, 'index.php?id='.$id);
+//groups_print_course_menu($course, 'index.php?id='.$id);
 echo '<script src="advanced_grade_export.js"></script>';
 echo '<div class="clearer"></div>';
 $mform->display();

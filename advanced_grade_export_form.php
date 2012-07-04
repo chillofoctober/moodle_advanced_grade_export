@@ -168,6 +168,9 @@ class advanced_grade_export_form extends moodleform {
 				  $mform->addElement('html','<tr><td style="width:250px;">');
 				  $mform->addElement('advcheckbox', 'itemids['.$grade_item->id.']', $grade_item->get_name(), null, array('group' => 1));
                     $mform->setDefault('itemids['.$grade_item->id.']', 1);
+					
+					$mform->addElement('html','</td><td style="width:100px">');
+					$mform->addElement('text','ed_'.'itemids['.$grade_item->id.']','');;
 					$mform->addElement('html','</td><td style="width:30px">');
 					$mform->addElement('select','sel_'.'itemids['.$grade_item->id.']','',$options1,'onchange="choosedOpts(this)"');
 					$mform->addElement('html','</td></tr>');

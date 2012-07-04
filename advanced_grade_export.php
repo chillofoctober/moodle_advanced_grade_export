@@ -33,17 +33,12 @@ class advanced_grade_export extends grade_export {
 		header("Content-type: application/msword");  
 		echo "<body>".iconv('UTF-8','CP1251',$this->advanced_grade_header)."<br>";
 		echo '<table style="border-collapse:collapse;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt">';
-        echo '<tr>';
-		//		print_r($this->columns);
-		//		echo $this->sel_itemids;
+        echo '<tr style="font-weight:bold;">';
 		$col_count=0;
 		foreach ($this->exp_cols as $index=>$unused)
 		  $index>$col_count?$col_count=$index:$col_count;
-		foreach ($this->sel_itemids as $index=>$unused)
-		  $index>$col_count?$col_count=$index:$col_count;
-		//		$col_count=count($this->exp_cols)+count($this->sel_itemids);
-		//		print_r($this->exp_cols);
-		for ($i=1;$i<$col_count;$i++)
+		max($this->sel_itemids)>$col_count?$col_count=max($this->sel_itemids):$col_count;
+		for ($i=1;$i<=$col_count;$i++)
 		{
 		  if (isset($this->exp_cols[$i]))
 			echo '<td width='.$this->exp_cols[$i][2].' style="border:solid windowtext 1.0pt;  mso-border-alt:solid windowtext .5pt">'.iconv('UTF-8','CP1251',$this->exp_cols[$i][1]).'</td>';
@@ -53,7 +48,8 @@ class advanced_grade_export extends grade_export {
 			  //			  print_r($index);
 			  //			  print_r($grade_item);
 			  if (isset($this->sel_itemids[$index]) && ($this->sel_itemids[$index]==$i)) {
-				echo '<td style="border:solid windowtext 1.0pt; mso-border-alt:solid windowtext .5pt">'.iconv('UTF-8','CP1251',$this->format_column_name($grade_item)).'</td>';
+				$col_name=isset($this->ed_itemids[$index])?$this->ed_itemids[$index]:$this->format_column_name($grade_item);
+				echo '<td style="border:solid windowtext 1.0pt; mso-border-alt:solid windowtext .5pt">'.iconv('UTF-8','CP1251',$col_name).'</td>';
 
             /// add a column_feedback column
 				if ($this->export_feedback) {
@@ -73,10 +69,10 @@ class advanced_grade_export extends grade_export {
         $gui = new graded_users_iterator($this->course, $this->columns, $this->groupid);
         $gui->init();
         while ($userdata = $gui->next_user()) {
-            $i++;
+		  //            $i++;
             $user = $userdata->user;
 			echo '<tr>';
-			for ($i=1;$i<$col_count;$i++)
+			for ($i=1;$i<=$col_count;$i++)
 			  {
 				if (isset($this->exp_cols[$i]))
 				switch ($this->exp_cols[$i][0])
@@ -143,24 +139,23 @@ class advanced_grade_export extends grade_export {
 	public  function display_my_preview($require_user_idnumber=false)
 	{
         global $OUTPUT;
-        echo $OUTPUT->heading(get_string('previewrows', 'grades'));
+        echo $OUTPUT->heading(get_string('previewrows', 'gradeexport_advanced_grade_export'));
 		echo $this->advanced_grade_header;
 		echo '<table style="border-width:2px">';
-        echo '<tr>';
+        echo '<tr style="font-weight:bold">';
 		$col_count=0;
 		foreach ($this->exp_cols as $index=>$unused)
 		  $index>$col_count?$col_count=$index:$col_count;
-		foreach ($this->sel_itemids as $index=>$unused)
-		  $index>$col_count?$col_count=$index:$col_count;
-		//		$col_count=count($this->exp_cols)+count($this->sel_itemids);
-		for ($i=1;$i<$col_count;$i++)
+		max($this->sel_itemids)>$col_count?$col_count=max($this->sel_itemids):$col_count;
+		for ($i=1;$i<=$col_count;$i++)
 		{
 		  if (isset($this->exp_cols[$i]))
 			echo '<td width='.$this->exp_cols[$i][2].' style="border-width:2px">'.$this->exp_cols[$i][1].'</td>';
 		  else {
 			foreach ($this->columns as $index=>$grade_item) {
 			  if (isset($this->sel_itemids[$index]) && ($this->sel_itemids[$index]==$i)) {
-				echo '<td style="border-width:2px">'.$this->format_column_name($grade_item).'</td>';
+				$name1=$this->ed_itemids[$index]!=''?$this->ed_itemids[$index]:$this->format_column_name($grade_item);
+				echo '<td style="border-width:2px">'.$name1.'</td>';
 				/// add a column_feedback column
 				if ($this->export_feedback) {
 				  echo '<td style="border-width:2px">'.$this->format_column_name($grade_item, true).'</td>';
@@ -173,13 +168,13 @@ class advanced_grade_export extends grade_export {
         echo '</tr>';
         /// Print all the lines of data.
 
-        $i = 0;
+        $j = 0;
 		$Ncount=0;
         $gui = new graded_users_iterator($this->course, $this->columns, $this->groupid);
         $gui->init();
         while ($userdata = $gui->next_user()) {
             // number of preview rows
-            if ($this->previewrows and $this->previewrows <= $i) {
+            if ($this->previewrows and $this->previewrows <= $j) {
                 break;
             }
             $user = $userdata->user;
@@ -196,7 +191,7 @@ class advanced_grade_export extends grade_export {
             }
 
             echo '<tr>';
-			for ($i=1;$i<$col_count;$i++)
+			for ($i=1;$i<=$col_count;$i++)
 			  {
 				if (isset($this->exp_cols[$i]))
 				switch ($this->exp_cols[$i][0])
@@ -253,10 +248,9 @@ class advanced_grade_export extends grade_export {
 					echo $rowstr;
 				  } 
 			  }
-			//            echo $rowstr;
             echo "</tr>";
 
-            $i++; // increment the counter
+            $j++; // increment the counter
         }
         echo '</table>';
         $gui->close();
