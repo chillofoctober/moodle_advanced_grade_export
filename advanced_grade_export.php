@@ -30,7 +30,8 @@ class advanced_grade_export extends grade_export {
 		$export_tracking = $this->track_exports();
 
 		echo "<html>";
-		header("Content-type: application/msword");  
+		header("Content-type: application/msword");
+		echo "<head><meta charset='windows-1251' /></head>";  
 		echo "<body>".iconv('UTF-8','CP1251',$this->advanced_grade_header)."<br>";
 		echo '<table style="border-collapse:collapse;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt">';
         echo '<tr style="font-weight:bold;">';
@@ -111,10 +112,10 @@ class advanced_grade_export extends grade_export {
 						}
 						$gradestr = $this->format_grade($grade);
 						if (is_numeric($gradestr)) {
-						  echo '<td style="border:solid windowtext 1.0pt; mso-border-alt:solid windowtext .5pt">'.$gradestr.'</td>';
+						  echo '<td style="border:solid windowtext 1.0pt; mso-border-alt:solid windowtext .5pt;text-align:center">'.$gradestr.'</td>';
 						}
 						else {
-						  echo '<td style="border:solid windowtext 1.0pt; mso-border-alt:solid windowtext .5pt">'.$gradestr.'</td>';
+						  echo '<td style="border:solid windowtext 1.0pt; mso-border-alt:solid windowtext .5pt;text-align:center"></td>';
 						}
 						// writing feedback if requested
 						if ($this->export_feedback) {
@@ -227,7 +228,7 @@ class advanced_grade_export extends grade_export {
 					foreach ($this->columns as $itemid=>$unused) {
 					  if (isset($this->sel_itemids[$itemid]) && ($this->sel_itemids[$itemid]==$i)) {
 						$gradetxt = $this->format_grade($userdata->grades[$itemid]);
-
+						$gradetxt=is_numeric($gradetxt)?$gradetxt:'';
 						// get the status of this grade, and put it through track to get the status
 						$g = new grade_export_update_buffer();
 						$grade_grade = new grade_grade(array('itemid'=>$itemid, 'userid'=>$user->id));

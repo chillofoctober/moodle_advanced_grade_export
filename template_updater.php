@@ -22,7 +22,7 @@ if (!defined('MOODLE_INTERNAL'))
 	  public function update($tid=0,$template_name, $template_header="", $template_footer="", $template_fields)
 	  {
 		global $DB;
-		
+	//	print_r($template_fields);
 		$dataobj=new stdClass();
 		$dataobj->id=$tid;
 		$dataobj->name=$template_name;
@@ -118,13 +118,19 @@ if (!defined('MOODLE_INTERNAL'))
 	  	$col_count=count($fields);
 	  	$rec=new stdClass();
 	  	$rec->templateid=$tid;
-	  	for ($i=1;$i<$col_count;$i++)
+		$j=0;
+	  	for ($i=1;$i<$col_count+$j;$i++)
 		  {
-			$rec->name=$fields[$i][1];
-			$rec->length=$fields[$i][2];
-			$rec->number=$i;
-			$rec->type=$DB->get_field_sql('select id from {advanced_grade_export_fields_type} where name="'.$fields[$i][0].'"');
-			$DB->insert_record('advanced_grade_export_template_fields',$rec);
+			if (isset($fields[$i]))
+			{
+				$rec->name=$fields[$i][1];
+				$rec->length=$fields[$i][2];
+				$rec->number=$i;
+				$rec->type=$DB->get_field_sql('select id from {advanced_grade_export_fields_type} where name="'.$fields[$i][0].'"');
+				$DB->insert_record('advanced_grade_export_template_fields',$rec);
+			} else {
+				$j++;
+			}
 		  }
 	  }
 

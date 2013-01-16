@@ -105,7 +105,7 @@ class advanced_grade_export_form extends moodleform {
         //$default_gradedecimals = $CFG->grade_export_decimalpoints;
         $options = array(0=>0, 1=>1, 2=>2, 3=>3, 4=>4, 5=>5);
         $mform->addElement('select', 'decimals', get_string('gradeexportdecimalpoints', 'grades'), $options);
-        $mform->setDefault('decimals', $CFG->grade_export_decimalpoints);
+//        $mform->setDefault('decimals', $CFG->grade_export_decimalpoints);
         $mform->disabledIf('decimals', 'display', 'eq', GRADE_DISPLAY_TYPE_LETTER);
 
         if (!empty($features['includeseparator'])) {
