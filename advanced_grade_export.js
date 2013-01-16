@@ -2,23 +2,19 @@ var selectedOptions = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 (function ()
 {
+	set_order();
 	var orders = document.getElementsByTagName('select');
 	for (i = 0;i < orders.length;i++)
 	{
-		console.log(orders[i]);
 		if (orders[i].id !== undefined && orders[i].id.indexOf('order') >= 0)
-		{
-			console.log(orders[i]);
-			selectedOptions[orders[i].selectedIndex] = orders.id;
-		}
+			selectedOptions[orders[i].selectedIndex] = orders[i].id;
 	}
-	set_order();
 
 })();
 
 function set_order()
 {
-	items = document.getElementsByTagName('table');
+	var items = document.getElementsByTagName('table');
 	for (var i = 0; i < items.length; i++)
 	{
 		if (items[i].className == "grade_elements")
