@@ -71,6 +71,9 @@ switch ($mode)
 	$updater->delete($tid);
 	$updater->read();
 	break;
+  case 5:
+	$mform->display();
+	break;
    }
 
 // end template code

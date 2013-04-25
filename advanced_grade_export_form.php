@@ -34,17 +34,18 @@ class advanced_grade_export_form extends moodleform {
         }
         // begin advanced grade elements
 		$mform->addElement('header','advanced_grade_template', get_string('template','gradeexport_advanced_grade_export'));
-        echo '<div style="position:absolute;z-index:100;top:160px;left:85%;margin-right:10px;"><a href="templates.php?id='.$COURSE->id.'&amp;mode=0">'
+		$output = '';
+		$output .= '<div style="position:absolute;z-index:100;top:160px;left:85%;margin-right:10px;"><a href="templates.php?id='.$COURSE->id.'&amp;mode=0">'
             .get_string('go_to_templates','gradeexport_advanced_grade_export').'</a><br>';
         $result = $DB->get_records('advanced_grade_export_template',array('course'=>$COURSE->id),null,'name,id');
-        echo '<ul>';
+        $output .= '<ul>';
         foreach ($result as $name=>$id)
           {
-            echo "<li><a href=index.php?id=".$COURSE->id."&amp;tid=".$id->id.">".$name."</a>";
-            echo "</li>";
+            $output .= "<li><a href=index.php?id=".$COURSE->id."&amp;tid=".$id->id.">".$name."</a>";
+            $output .= "</li>";
           }
-        echo '</ul></div>';
-
+        $output .= '</ul></div>';
+		$mform->addElement('html', $output);		
         $headfoot=$DB->get_record('advanced_grade_export_template',array('id'=>$tid),'*');
         $fields=$DB->get_records('advanced_grade_export_template_fields',array('templateid'=>$tid));
         $names=$DB->get_records('advanced_grade_export_fields_type');
@@ -59,7 +60,6 @@ class advanced_grade_export_form extends moodleform {
             {
               $this->fields_array_parameters($fieldsarr[$i]);
             }		
-		
 		$mform->addElement('editor', 'advanced_grade_header', get_string('header','gradeexport_advanced_grade_export'))->setValue(array('text' => $this->set_name($headfoot->header,'')) );;
 		$mform->setType('advanced_grade_header', PARAM_RAW);
         $opts='style="width:50px;"';

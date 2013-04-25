@@ -53,6 +53,8 @@ if (!defined('MOODLE_INTERNAL'))
 		  {
 			print "&nbsp;".$name."<a href=templates.php?id=".$this->id."&amp;mode=1&amp;tid=".$id->id.">";
 			print '<img src="'.$OUTPUT->pix_url('t/edit') . '" class="iconsmall" alt="'.get_string('edit').'" title="'.get_string('edit').'" ></a>';
+			print "<a href=templates.php?id=".$this->id."&amp;mode=5&amp;tid=".$id->id.">";
+			print '<img src="'.$OUTPUT->pix_url('t/copy') . '" class="iconsmall" alt="'.get_string('copy').'" title="'.get_string('copy').'" ></a>';
 			print "<a href=templates.php?id=".$this->id."&amp;mode=4&amp;tid=".$id->id.">";
 			print '<img src="'.$OUTPUT->pix_url('t/delete') . '" class="iconsmall" alt="'.get_string('delete').'" title="'.get_string('delete').'" ></a><br>&nbsp;&nbsp;';
 		  }

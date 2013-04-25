@@ -38,7 +38,7 @@ class advanced_grade_export extends grade_export {
 		$col_count=0;
 		foreach ($this->exp_cols as $index=>$unused)
 		  $index>$col_count?$col_count=$index:$col_count;
-		max($this->sel_itemids)>$col_count?$col_count=max($this->sel_itemids):$col_count;
+		!empty($this->sel_itemids) && max($this->sel_itemids)>$col_count?$col_count=max($this->sel_itemids):$col_count;
 		for ($i=1;$i<=$col_count;$i++)
 		{
 		  if (isset($this->exp_cols[$i]))
@@ -147,7 +147,7 @@ class advanced_grade_export extends grade_export {
 		$col_count=0;
 		foreach ($this->exp_cols as $index=>$unused)
 		  $index>$col_count?$col_count=$index:$col_count;
-		max($this->sel_itemids)>$col_count?$col_count=max($this->sel_itemids):$col_count;
+		!empty($this->sel_itemids) && max($this->sel_itemids)>$col_count?$col_count=max($this->sel_itemids):$col_count;
 		for ($i=1;$i<=$col_count;$i++)
 		{
 		  if (isset($this->exp_cols[$i]))
