@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <?xml version="1.0" encoding="UTF-8" ?>
 <XMLDB PATH="grade/export/advanced_grade_export/db" VERSION="20120424" COMMENT="XMLDB file for Moodle grade/export/advanced_grade_export"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -10,7 +11,9 @@
         <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="name"/>
         <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="course" NEXT="header"/>
         <FIELD NAME="header" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" COMMENT="This is a header for advanced grade export" PREVIOUS="name" NEXT="footer"/>
-        <FIELD NAME="footer" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" COMMENT="This is a footer for advanced grade export" PREVIOUS="header"/>
+        <FIELD NAME="footer" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" COMMENT="This is a footer for advanced grade export" PREVIOUS="header" NEXT="updatedat"/>
+		<FIELD NAME="updatedat" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="footer" NEXT="userid"/>
+		<FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNUL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="updatedat"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for advanced grade export template"/>

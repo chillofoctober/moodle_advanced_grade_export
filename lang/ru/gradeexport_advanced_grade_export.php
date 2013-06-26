@@ -36,3 +36,5 @@ $string['success_save']='успешно сохранено';
 $string['success_delete']='успешно удалено';
 $string['templates_for']='шаблоны для улучшенного экспорта оценок';
 $string['previewrows']='Предпросмотр';
+$string['lastupdate'] = 'Последнее изменение: ';
+$string['author'] = '<br />Автор: ';

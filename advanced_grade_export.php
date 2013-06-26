@@ -18,7 +18,7 @@
 require_once 'advanced_grade_export_lib.php';
 require_once 'advanced_grade_export_form.php';
 
-class advanced_grade_export extends grade_export {
+class advanced_grade_export extends grade_export_abstract {
 
     public $plugin = 'advanced_grade_export';
 
@@ -66,7 +66,7 @@ class advanced_grade_export extends grade_export {
 		    /// Print all the lines of data.
 		$i = 0;
 		$Ncount=0;
-        $geub = new grade_export_update_buffer();
+        $geub = new advanced_grade_export_update_buffer();
         $gui = new graded_users_iterator($this->course, $this->columns, $this->groupid);
         $gui->init();
         while ($userdata = $gui->next_user()) {

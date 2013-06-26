@@ -51,3 +51,5 @@ $string['success_save']='saved successfully';
 $string['success_delete']='deleted successfully';
 $string['templates_for']='templates for advanced grade export';
 $string['previewrows']='preview';
+$string['lastupdate'] = 'Last update: ';
+$string['author'] = '<br />Author: ';

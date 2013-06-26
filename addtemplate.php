@@ -8,6 +8,7 @@ if (!defined('MOODLE_INTERNAL')) {
 }
 
 require_once $CFG->libdir.'/formslib.php';
+require_once $CFG->libdir.'/moodlelib.php';
 
 class addtemplate extends moodleform
 {
@@ -67,6 +68,11 @@ class addtemplate extends moodleform
 		$mform->setType('mode',PARAM_INT);
 		$mform->addElement('hidden','tid',$this->_customdata['tid']);
 		$mform->setType('tid',PARAM_INT);
+		if ($this->_customdata['tid']>0 && $headfoot->userid > 0) {
+		  $user = $DB->get_record('user', array('id'=>$headfoot->userid));
+		  $mform->addElement('html', get_string('lastupdate','gradeexport_advanced_grade_export').userdate($headfoot->updatedat).
+							 get_string('author','gradeexport_advanced_grade_export').$user->lastname.' '.$user->firstname);
+		}
         $this->add_action_buttons(false, get_string('submit'));
   }
  

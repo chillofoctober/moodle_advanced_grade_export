@@ -22,7 +22,7 @@ require_once 'advanced_grade_export_form.php';
 /**
  * Base export class
  */
-abstract class grade_export {
+abstract class grade_export_abstract {
 
     public $plugin; // plgin name - must be filled in subclasses!
 
@@ -57,7 +57,7 @@ abstract class grade_export {
      * @param boolean $export_letters
      * @note Exporting as letters will lead to data loss if that exported set it re-imported.
      */
-    public function grade_export($course, $groupid=0, $itemlist='', $export_feedback=false, $updatedgradesonly = false, $displaytype = GRADE_DISPLAY_TYPE_REAL, $decimalpoints = 2,$advanced_grade_header, $advanced_grade_footer, $exp_cols, $sel_itemids='', $ed_itemids='') {
+    public function grade_export_abstract($course, $groupid=0, $itemlist='', $export_feedback=false, $updatedgradesonly = false, $displaytype = GRADE_DISPLAY_TYPE_REAL, $decimalpoints = 2,$advanced_grade_header, $advanced_grade_footer, $exp_cols, $sel_itemids='', $ed_itemids='') {
         $this->course = $course;
         $this->groupid = $groupid;
         $this->grade_items = grade_item::fetch_all(array('courseid'=>$this->course->id));
@@ -318,7 +318,7 @@ abstract class grade_export {
  * This class is used to update the exported field in grade_grades.
  * It does internal buffering to speedup the db operations.
  */
-class grade_export_update_buffer {
+class advanced_grade_export_update_buffer {
     public $update_list;
     public $export_time;
 

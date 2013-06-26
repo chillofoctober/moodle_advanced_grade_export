@@ -21,13 +21,16 @@ if (!defined('MOODLE_INTERNAL'))
 
 	  public function update($tid=0,$template_name, $template_header="", $template_footer="", $template_fields)
 	  {
-		global $DB;
+		global $DB, $USER;
 	//	print_r($template_fields);
 		$dataobj=new stdClass();
 		$dataobj->id=$tid;
 		$dataobj->name=$template_name;
 		$dataobj->header=$template_header;
 		$dataobj->footer=$template_footer;
+		//date_default_timezone_set("UTC"); 
+		$dataobj->updatedat = time();
+		$dataobj->userid = $USER->id;
 		$transaction = $DB->start_delegated_transaction();
 		try{
 			$DB->update_record('advanced_grade_export_template',$dataobj);
@@ -51,7 +54,7 @@ if (!defined('MOODLE_INTERNAL'))
 	  //	print_r($this->id);
 		foreach ($result as $name=>$id)
 		  {
-			print "&nbsp;".$name."<a href=templates.php?id=".$this->id."&amp;mode=1&amp;tid=".$id->id.">";
+			print "&nbsp;".$name."&nbsp;&nbsp;<a href=templates.php?id=".$this->id."&amp;mode=1&amp;tid=".$id->id.">";
 			print '<img src="'.$OUTPUT->pix_url('t/edit') . '" class="iconsmall" alt="'.get_string('edit').'" title="'.get_string('edit').'" ></a>';
 			print "<a href=templates.php?id=".$this->id."&amp;mode=5&amp;tid=".$id->id.">";
 			print '<img src="'.$OUTPUT->pix_url('t/copy') . '" class="iconsmall" alt="'.get_string('copy').'" title="'.get_string('copy').'" ></a>';
@@ -63,7 +66,7 @@ if (!defined('MOODLE_INTERNAL'))
 	  
 	  public function add($template_name, $template_header="", $template_footer="", $template_fields)
 	  {
-		global $DB;
+		global $DB, $USER;
 		
 		$id = $DB->get_field_sql('SELECT ifnull(max(id)+1,1) "maxid"  FROM {advanced_grade_export_template}');
 
@@ -73,15 +76,12 @@ if (!defined('MOODLE_INTERNAL'))
 		$record->name=$template_name;
 		$record->header=$template_header;
 		$record->footer=$template_footer;
+		//		date_default_timezone_set("UTC"); 
+		$record->updatedat = time();
+		$record->userid = $USER->id;
 		$transaction = $DB->start_delegated_transaction();
 		try {
-			$DB->insert_record('advanced_grade_export_template',$record);
-		// if it's overall first record $id=1 but maybe has deleted records
-			$result=$DB->get_record_sql('SELECT max(id) "maxid", count(id) "countid"  FROM {advanced_grade_export_template}');
-		// may be another record added in this time? check count(records)
-		//	print_r($result);
-			if ($result->countid == 1)
-		  		$id=$result->maxid;
+			$id = $DB->insert_record('advanced_grade_export_template',$record);
 		// else $id stay without changes
 			$this->insert_fields($id,$template_fields);
 			$transaction->allow_commit();
