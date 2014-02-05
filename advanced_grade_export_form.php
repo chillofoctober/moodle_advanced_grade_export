@@ -81,7 +81,7 @@ class advanced_grade_export_form extends moodleform {
 		
 		$mform->addElement('editor', 'advanced_grade_footer', get_string('footer','gradeexport_advanced_grade_export'))->setValue(array('text'=>$this->set_name($headfoot->footer,'')));
 		$mform->setType('advanced_grade_footer', PARAM_RAW);
-			// end advanced grade elements
+		// end advanced grade elements
 		$mform->addElement('header', 'options', get_string('options', 'grades'));
 
         $mform->addElement('advcheckbox', 'export_feedback', get_string('exportfeedback', 'grades'));
@@ -94,7 +94,6 @@ class advanced_grade_export_form extends moodleform {
             $mform->addElement('advcheckbox', 'updatedgradesonly', get_string('updatedgradesonly', 'grades'));
         }
         /// selections for decimal points and format, MDL-11667, defaults to site settings, if set
-        //$default_gradedisplaytype = $CFG->grade_export_displaytype;
         $options = array(GRADE_DISPLAY_TYPE_REAL       => get_string('real', 'grades'),
                          GRADE_DISPLAY_TYPE_PERCENTAGE => get_string('percentage', 'grades'),
                          GRADE_DISPLAY_TYPE_LETTER     => get_string('letter', 'grades'));
@@ -102,10 +101,8 @@ class advanced_grade_export_form extends moodleform {
         $mform->addElement('select', 'display', get_string('gradeexportdisplaytype', 'grades'), $options);
         $mform->setDefault('display', $CFG->grade_export_displaytype);
 
-        //$default_gradedecimals = $CFG->grade_export_decimalpoints;
-        $options = array(0=>0, 1=>1, 2=>2, 3=>3, 4=>4, 5=>5);
+		$options = array(0=>0, 1=>1, 2=>2, 3=>3, 4=>4, 5=>5);
         $mform->addElement('select', 'decimals', get_string('gradeexportdecimalpoints', 'grades'), $options);
-//        $mform->setDefault('decimals', $CFG->grade_export_decimalpoints);
         $mform->disabledIf('decimals', 'display', 'eq', GRADE_DISPLAY_TYPE_LETTER);
 
         if (!empty($features['includeseparator'])) {
@@ -120,7 +117,7 @@ class advanced_grade_export_form extends moodleform {
             $mform->addElement('header', 'publishing', get_string('publishing', 'grades'));
             $options = array(get_string('nopublish', 'grades'), get_string('createnewkey', 'userkey'));
             $keys = $DB->get_records_select('user_private_key', "script='grade/export' AND instance=? AND userid=?",
-                            array($COURSE->id, $USER->id));
+											array($COURSE->id, $USER->id));
             if ($keys) {
                 foreach ($keys as $key) {
                     $options[$key->value] = $key->value; // TODO: add more details - ip restriction, valid until ??
@@ -167,14 +164,14 @@ class advanced_grade_export_form extends moodleform {
                 } else {
 				  $mform->addElement('html','<tr><td style="width:250px;">');
 				  $mform->addElement('advcheckbox', 'itemids['.$grade_item->id.']', $grade_item->get_name(), null, array('group' => 1));
-                    $mform->setDefault('itemids['.$grade_item->id.']', 1);
-					
-					$mform->addElement('html','</td><td style="width:100px">');
-					$mform->addElement('text','ed_'.'itemids['.$grade_item->id.']','');;
-					$mform->addElement('html','</td><td style="width:30px">');
-					$mform->addElement('select','sel_'.'itemids['.$grade_item->id.']','',$options1,'onchange="choosedOpts(this)"');
-					$mform->addElement('html','</td></tr>');
-                    $needs_multiselect = true;
+				  $mform->setDefault('itemids['.$grade_item->id.']', 1);
+				  
+				  $mform->addElement('html','</td><td style="width:100px">');
+				  $mform->addElement('text','ed_'.'itemids['.$grade_item->id.']','');;
+				  $mform->addElement('html','</td><td style="width:30px">');
+				  $mform->addElement('select','sel_'.'itemids['.$grade_item->id.']','',$options1,'onchange="choosedOpts(this)"');
+				  $mform->addElement('html','</td></tr>');
+				  $needs_multiselect = true;
                 }
             }
 			$mform->addElement('html','</table>');

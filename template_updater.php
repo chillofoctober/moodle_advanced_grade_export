@@ -8,11 +8,7 @@ if (!defined('MOODLE_INTERNAL'))
 
 	class template_updater{
 
-	  /*	  private $name;
-	  private $header;
-	  private $footer;*/
 	  private $id;
-	  //	  private $fields;
 	  
 	  public function template_updater($template_id)
 	  {
@@ -22,13 +18,11 @@ if (!defined('MOODLE_INTERNAL'))
 	  public function update($tid=0,$template_name, $template_header="", $template_footer="", $template_fields)
 	  {
 		global $DB, $USER;
-	//	print_r($template_fields);
 		$dataobj=new stdClass();
 		$dataobj->id=$tid;
 		$dataobj->name=$template_name;
 		$dataobj->header=$template_header;
 		$dataobj->footer=$template_footer;
-		//date_default_timezone_set("UTC"); 
 		$dataobj->updatedat = time();
 		$dataobj->userid = $USER->id;
 		$transaction = $DB->start_delegated_transaction();
@@ -51,7 +45,6 @@ if (!defined('MOODLE_INTERNAL'))
 	  {
 		global $DB, $OUTPUT;
 		$result = $DB->get_records_sql('SELECT name, id FROM {advanced_grade_export_template} WHERE course = ?', array('course'=>$this->id));
-	  //	print_r($this->id);
 		foreach ($result as $name=>$id)
 		  {
 			print "&nbsp;".$name."&nbsp;&nbsp;<a href=templates.php?id=".$this->id."&amp;mode=1&amp;tid=".$id->id.">";
@@ -76,7 +69,6 @@ if (!defined('MOODLE_INTERNAL'))
 		$record->name=$template_name;
 		$record->header=$template_header;
 		$record->footer=$template_footer;
-		//		date_default_timezone_set("UTC"); 
 		$record->updatedat = time();
 		$record->userid = $USER->id;
 		$transaction = $DB->start_delegated_transaction();

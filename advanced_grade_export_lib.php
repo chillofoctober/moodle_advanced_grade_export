@@ -61,7 +61,7 @@ abstract class grade_export_abstract {
         $this->course = $course;
         $this->groupid = $groupid;
         $this->grade_items = grade_item::fetch_all(array('courseid'=>$this->course->id));
-		//		print_r($this->grade_items);
+
         //Populating the columns here is required by /grade/export/(whatever)/export.php
         //however index.php, when the form is submitted, will construct the collection here
         //with an empty $itemlist then reconstruct it in process_form() using $formdata
@@ -79,13 +79,8 @@ abstract class grade_export_abstract {
                 }
             }
         } else {
-		  /* I think the commented code is same as code written later            
-						foreach ($this->grade_items as $itemid=>$unused) {
-                $this->columns[$itemid] =& $this->grade_items[$itemid];
-				}*/
 		  $this->columns=$this->grade_items;
         }
-		//		print_r($this->columns);
         $this->export_feedback = $export_feedback;
         $this->userkey         = '';
         $this->previewrows     = false;
@@ -130,13 +125,6 @@ abstract class grade_export_abstract {
 				}
 			}
 		}
-		/*	for what this code?
-			else {
-            foreach ($this->grade_items as $itemid=>$unused) {
-                $this->columns[$itemid] =& $this->grade_items[$itemid];
-            }
-			}*/
-		//print_r($this->sel_itemids);
 		
         if (isset($formdata->key)) {
             if ($formdata->key == 1 && isset($formdata->iprestriction) && isset($formdata->validuntil)) {

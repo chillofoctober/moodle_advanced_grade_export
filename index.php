@@ -76,7 +76,6 @@ if ($data = $mform->get_data()) {
 echo '<div class="clearer"></div>';
 $mform->display();
 echo '<script src="advanced_grade_export.js"></script>';
-//echo '<script>set_order(this);</script>';
 
 echo $OUTPUT->footer();
 

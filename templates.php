@@ -5,7 +5,6 @@
 
 require_once '../../../config.php';
 require_once 'advanced_grade_export_lib.php';
-//require_once 'advanced_grade_export.php';
 require_once 'addtemplate.php';
 require_once 'template_updater.php';
 

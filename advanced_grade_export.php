@@ -46,8 +46,6 @@ class advanced_grade_export extends grade_export_abstract {
 		  else
 		  {
 			foreach ($this->columns as $index=>$grade_item) {
-			  //			  print_r($index);
-			  //			  print_r($grade_item);
 			  if (isset($this->sel_itemids[$index]) && ($this->sel_itemids[$index]==$i)) {
 				$col_name=isset($this->ed_itemids[$index])?$this->ed_itemids[$index]:$this->format_column_name($grade_item);
 				echo '<td style="border:solid windowtext 1.0pt; mso-border-alt:solid windowtext .5pt">'.iconv('UTF-8','CP1251',$col_name).'</td>';
@@ -63,14 +61,13 @@ class advanced_grade_export extends grade_export_abstract {
 
 		echo '</tr>';
 
-		    /// Print all the lines of data.
+		/// Print all the lines of data.
 		$i = 0;
 		$Ncount=0;
         $geub = new advanced_grade_export_update_buffer();
         $gui = new graded_users_iterator($this->course, $this->columns, $this->groupid);
         $gui->init();
         while ($userdata = $gui->next_user()) {
-		  //            $i++;
             $user = $userdata->user;
 			echo '<tr>';
 			for ($i=1;$i<=$col_count;$i++)
@@ -125,7 +122,6 @@ class advanced_grade_export extends grade_export_abstract {
 					}
 				  }
 			  }
-			//            $j=5;
 
 			echo '</tr>';
 			}

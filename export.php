@@ -70,7 +70,6 @@ if (groups_get_course_groupmode($COURSE) == SEPARATEGROUPS and !has_capability('
 
 // print all the exported data here
 $export = new advanced_grade_export($course, $groupid, $itemids, $export_feedback, $updatedgradesonly, $displaytype, $decimalpoints,$advanced_grade_header,$advanced_grade_footer,$exp_cols, $sel_itemids,$ed_itemids );
-//print_r($exp_cols);
 $export->print_grades();
 
 function build_items($string)

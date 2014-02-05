@@ -61,7 +61,7 @@ class addtemplate extends moodleform
 		
 		$mform->addElement('editor', 'advanced_grade_footer', get_string('footer','gradeexport_advanced_grade_export'))->setValue(array('text'=>$this->set_name($headfoot->footer,'')));
 		$mform->setType('advanced_grade_footer', PARAM_RAW);
-			// end advanced grade elements
+		// end advanced grade elements
 		$mform->addElement('hidden', 'id', $COURSE->id);
         $mform->setType('id', PARAM_INT);
 		$mform->addElement('hidden','mode',$md);
